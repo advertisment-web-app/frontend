@@ -1,0 +1,23 @@
+/* #66CDAA 
+#FFDEAD (Navajo White) - a warm contrast that adds warmth to the palette.
+#FAFAD2 (Light Goldenrod Yellow) - a gentle pastel that complements without overpowering.
+
+
+*/
+
+*{
+  color:#4C4C4C;
+}
+
+.landingPage{
+  height:100vh;
+  background-image: url("./assets/images/LandingPageBg.png");
+}
+.registerStatus{
+  height:100vh;
+  background-image: url("./assets/images/RegisterStatusBg.png");
+  padding-top: 7%;
+}
+.registerSide{
+  background-image: url("./assets/images/SignupLoginSideImg.png");
+}
