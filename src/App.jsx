@@ -5,6 +5,8 @@ import LandingPage from "./pages/LandingPage";
 import RegisterStatus from './pages/RegisterStatus';
 import VendorSignUp from './pages/VendorSignUp';
 import VendorLogin from './pages/VendorLogin';
+import UserLogin from './pages/UserLogin';
+import UserSignUp from './pages/UserSignUp';
 
 function App() {
 const router=createBrowserRouter([
@@ -24,6 +26,15 @@ const router=createBrowserRouter([
     path:"/vendorlogin",
     element:<VendorLogin/>
   },
+  {
+    path:"/usersignup",
+    element:<UserSignUp/>
+  },
+  {
+    path:"/userlogin",
+    element:<UserLogin/>
+  },
+  
 ])
 return <RouterProvider router={router}/>
 }
