@@ -1,7 +1,42 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { apiUserLogin } from "../services/userLogin";
+import { toast } from "react-toastify";
 
 
 const UserLogin = () => {
+  const navigate = useNavigate();
+
+  const [logging, setLogging]=useState(false);
+
+  const handleSubmit =async (event)=>{
+    event.preventDefault();
+    setLogging(true);
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const data = {
+      email:formData.get("email"),
+      password:formData.get("password")
+    }
+
+
+    try{
+      console.log('data',data);
+      const response = await apiUserLogin(data);
+      console.log(response);
+      if(response.status==200 || response.status==201){
+        toast.success("You have logged in successfuly");
+        navigate(" ");
+      }}
+
+      catch(error){
+        setLogging(true);
+        toast.error("Failed to log in. Please try again.")
+      }
+    
+  };
   return (
     <section className="h-[100vh] bg-[#F8EEEC] pt-[7%]">
       <div className="h-[90%] bg-[white] shadow-lg w-[70%] border ml-[15%] rounded-xl flex justify-between">
@@ -17,17 +52,22 @@ const UserLogin = () => {
             </div>
             <hr />
             <h2 className=" font-semibold bg-[white] mt-[-0.8em] w-[10%] px-[8px] h-[5%] ml-[45%]">OR</h2>
-            <form className="h-[60%] p-[0.5em] flex flex-col" action="">
-              <label htmlFor="username">Enter username</label>
-              <input type="text" name="username" className="rounded-md border w-[100%] h-[15%] mb-[0.5em]"/>
-
-              <label htmlFor="username">Enter email</label>
+            <form className="h-[60%] p-[0.5em] flex flex-col" onSubmit={handleSubmit}>
+             
+              <label htmlFor="email">Enter email</label>
               <input type="email" name="email" className="rounded-md border w-[100%] h-[15%] mb-[0.5em]"/>
 
-              <label htmlFor="username">Enter password</label>
-              <input type="text" name="password" className="rounded-md border w-[100%] h-[15%]"/>
+              <label htmlFor="password">Enter password</label>
+              <input type="password" name="password" className="rounded-md border w-[100%] h-[15%]"/>
 
-              <button className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">Create account</button>
+              <button
+              type="submit"
+              disabled={logging}
+               className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">
+              {logging? "Logging In..." : "Log In"}
+                
+          
+                </button>
             </form>
             <p className="text-center">Don't have an account? <Link className="text-[#9932CC]" to="/usersignup">Sign Up</Link></p>
           </div>
