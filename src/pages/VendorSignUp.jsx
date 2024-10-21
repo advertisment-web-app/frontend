@@ -7,7 +7,7 @@ const VendorSignUp = () => {
   //function to navigate to login page after submission
   const navigate = useNavigate();
   
-  // usestate to show logging in on button
+  // usestate to show creating account on button
   const [loading,setLoading] = useState(false);
   // function to submit form
    const handleSubmit = async (event)=>{
