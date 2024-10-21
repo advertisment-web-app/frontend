@@ -19,5 +19,18 @@
   padding-top: 7%;
 }
 .registerSide{
-  background-image: url("./assets/images/SignupLoginSideImg.png");
+  background-image: url("./assets/images/userInnerSide.png");
+  background-size: cover;
+  background-position: center;
+}
+#vendorSignup{
+  background-image: url("./assets/images/VendorBg.png");
+}
+#vendorLogin{
+  background-image: url("./assets/images/VendorBg.png");
+}
+#vendorInnerSide{
+  background-image: url("./assets/images/VendorInnerBg.jpeg");
+  background-size: cover;
+  background-position:center;
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const VendorLogin = () => {
   return (
-    <section className="h-[100vh] bg-[#F8EEEC] pt-[7%]">
+    <section id="vendorLogin" className="h-[100vh] pt-[7%]">
       <div className="h-[90%] bg-[white] shadow-lg w-[70%] border ml-[15%] rounded-xl flex justify-between">
         <div className="w-[40%] border h-[95%] mt-[1.5%] ml-[1em] rounded-xl , registerSide">
 
