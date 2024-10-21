@@ -29,7 +29,7 @@ const VendorLogin = () => {
 
               <button className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">Create account</button>
             </form>
-            <p className="text-center">Don't have an account? <Link className="text-[#9932CC]" to="/vendorsignup">Sign Up</Link></p>
+            <p className="text-center">Don't have an account? <Link className="text-[#9932CC]" to="/usersignup">Sign Up</Link></p>
           </div>
 
         </div>
