@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 
-const VendorLogin = () => {
+const UserLogin = () => {
   return (
-    <section id="vendorLogin" className="h-[100vh] pt-[7%]">
+    <section className="h-[100vh] bg-[#F8EEEC] pt-[7%]">
       <div className="h-[90%] bg-[white] shadow-lg w-[70%] border ml-[15%] rounded-xl flex justify-between">
         <div className="w-[40%] border h-[95%] mt-[1.5%] ml-[1em] rounded-xl , registerSide">
 
@@ -29,7 +29,7 @@ const VendorLogin = () => {
 
               <button className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">Create account</button>
             </form>
-            <p className="text-center">Don't have an account? <Link className="text-[#9932CC]" to="/vendorsignup">Sign Up</Link></p>
+            <p className="text-center">Don't have an account? <Link className="text-[#9932CC]" to="/usersignup">Sign Up</Link></p>
           </div>
 
         </div>
@@ -38,4 +38,4 @@ const VendorLogin = () => {
   )
 }
 
-export default VendorLogin;
+export default UserLogin;
