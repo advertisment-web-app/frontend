@@ -1,9 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
-import RegisterStatus from "./pages/RegisterStatus";
-import VendorSignUp from "./pages/VendorSignUp";
-import VendorLogin from "./pages/VendorLogin";
+import RegisterStatus from './pages/RegisterStatus';
+import VendorSignUp from './pages/VendorSignUp';
+import VendorLogin from './pages/VendorLogin';
+import UserSignUp from './pages/UserSignUp';
+import UserLogin from './pages/UserLogin';
 import DashboardLayout from "./layouts/DashboardLayout";
 import GetAll from "./pages/dashboard/components/GetAll";
 import AddForm from "./pages/dashboard/components/AddForm";
@@ -13,13 +15,34 @@ import About from "./components/About";
 import Resources from "./components/Resources";
 import Settings from "./pages/dashboard/components/Settings";
 
+
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <LandingPage />,
-    },
-    {
+const router=createBrowserRouter([
+  {
+    path:"/",
+    element:<LandingPage/>
+  },
+  {
+    path:"/registerstatus",
+    element:<RegisterStatus/>
+  },
+  {
+    path:"/vendorsignup",
+    element:<VendorSignUp/>
+  },
+  {
+    path:"/vendorlogin",
+    element:<VendorLogin/>
+  },
+  {
+    path:"/usersignup",
+    element:<UserSignUp/>
+  },
+  {
+    path:"/userlogin",
+    element:<UserLogin/>
+  },
+  {
       path: "/about",
       element: <About />
     },
@@ -27,19 +50,7 @@ function App() {
       path: "/resources",
       element: <Resources />
     },
-    {
-      path: "/registerstatus",
-      element: <RegisterStatus />,
-    },
-    {
-      path: "/vendorsignup",
-      element: <VendorSignUp />,
-    },
-    {
-      path: "/vendorlogin",
-      element: <VendorLogin />,
-    },
-    {
+   {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
@@ -63,10 +74,11 @@ function App() {
           path: "settings",
           element: <Settings />
         },
-      ],
-    },
-  ]);
-  return <RouterProvider router={router} />;
+  ],
+  },
+  
+]);
+return <RouterProvider router={router}/>,
 }
 
 export default App;
