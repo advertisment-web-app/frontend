@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 
@@ -116,9 +115,6 @@
 
 
 import { useState } from "react";
-=======
-
->>>>>>> master
 import { Link, useNavigate } from "react-router-dom";
 import { apiUserSignup } from "../services/userSignup";
 import { toast } from "react-toastify";
@@ -135,7 +131,6 @@ const UserSignUp = () => {
     role: 'user'
   });
 
-<<<<<<< HEAD
   // usestate to show creating account in on button
   const [loading, setLoading] = useState(false);
 
@@ -165,31 +160,6 @@ const UserSignUp = () => {
       toast.error("Failed to create account. Please try again.");
     }
   };
-=======
-const UserSignUp = () => {
-//  func to add event listener to submit button
-    const handleSubmit = async (event) =>{
-        event.preventDefault();
-    }
-
-    // func to save form data
-    const saveSignUp = async (event) =>{
-        try{
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`,{
-                first_name: formData.get("first_name"),
-                last_name: formData.get("last_name"),
-                email:formData.get("email"),
-                password:formData.get("password"),
-            });
-
-        }
-        catch (error){
-            console.log(error);
-        }
-    };
->>>>>>> master
 
   return (
     <section className="h-[100vh] bg-[#F8EEEC] pt-[7%]">
@@ -208,7 +178,6 @@ const UserSignUp = () => {
             </div>
             <hr />
             <h2 className=" font-semibold bg-[white] mt-[-0.8em] w-[10%] px-[8px] h-[5%] ml-[45%]">OR</h2>
-<<<<<<< HEAD
 
             <form className="h-[60%] p-[0.5em] flex flex-col" onSubmit={handleSubmit}>
               <label>Enter username</label>
@@ -231,16 +200,6 @@ const UserSignUp = () => {
                   onChange={handleInputChange}
                   required
                 />
-=======
-            <form className="h-[60%] p-[0.5em] flex flex-col" onSubmit={saveSignUp}>
-              {/* <label htmlFor="username">Enter username</label>
-              <input type="text" name="username" className="rounded-md border w-[100%] h-[15%] mb-[0.5em]"/> */}
-              
-                <label>Enter username</label>
-                <div className="h-[20%]">
-                <input type="text" name="first-name" placeholder="First name" className="rounded-md border w-[45%] h-[80%] mb-[0.5em] mr-[10%]" />
-                <input type="text" name="last-name" placeholder="Last name" className="rounded-md border w-[45%] h-[80%] mb-[0.5em]" />
->>>>>>> master
               </div>
 
               <label htmlFor="email">Enter email</label>
@@ -263,7 +222,6 @@ const UserSignUp = () => {
                 required
               />
 
-<<<<<<< HEAD
               <button
                 type="submit"
                 className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md"
@@ -272,12 +230,6 @@ const UserSignUp = () => {
                 {loading ? 'Creating account...' : 'Create account'}
               </button>
             </form>
-=======
-              <button type="submit" onSubmit={handleSubmit} className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">Create account</button>
-            </form>
-            <p className="text-center">Already have an account? <Link className="text-[#9932CC]" to="/">Sign in</Link></p>
-          </div>
->>>>>>> master
 
             {/* {error && <p className="text-red-500">{error}</p>} */}
 
@@ -291,8 +243,4 @@ const UserSignUp = () => {
   );
 };
 
-<<<<<<< HEAD
 export default UserSignUp;
-=======
-export default UserSignUp;
->>>>>>> master
