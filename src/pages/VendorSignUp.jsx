@@ -82,12 +82,15 @@ const VendorSignUp = () => {
               className="rounded-md border w-[100%] h-[15%]" 
               required/>
 
+
+
               <button 
               type="submit" 
               disabled={loading}
               className="pb-[0.4em] h-[15%] mt-[1em] w-[100%] border font-extrabold text-[1.2em] text-[white] bg-[#9932CC] rounded-md">
                 {loading ? "Creating account..." : "Create account"}
                 </button>
+
             </form>
             <p className="text-center">Already have an account? <Link className="text-[#9932CC]" to="/vendorlogin">Sign in</Link></p>
           </div>
