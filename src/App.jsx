@@ -16,6 +16,7 @@ import Resources from "./components/Resources";
 import Settings from "./pages/dashboard/components/Settings";
 import GetAllAdverts from "./pages/getadverts";
 import SingleAdvert from "./pages/singleadd";
+import VendorGet from "./pages/dashboard/components/Vendorget";
 
 
 function App() {
@@ -66,7 +67,7 @@ const router=createBrowserRouter([
       children: [
         {
           index: true,
-          element: <GetAll />,
+          element: <VendorGet />
         },
         {
           path: "addform",
