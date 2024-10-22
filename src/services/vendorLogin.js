@@ -1,4 +1,4 @@
 import { apiClient } from "./config"
-export const apiVendorLogin = (payload)=>{
-   return apiClient.post("/login",payload)
-}
+export const apiVendorLogin = async (payload)=>{
+   return apiClient.post("/login",payload);
+};
