@@ -11,49 +11,41 @@ const AddForm = () => {
   const [user, setUser] = useState(""); // Set this to the logged-in user
   const [category, setCategory] = useState(""); // New category field
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
 
-  // Hardcoded categories
-  const categories = [
-    "clothing and accessories",
-    "Electronics and gadgets",
-    "Home and living",
-    "Beauty and personal care",
-    "Handmade and Craft Items",
-    "Toys and games",
-    "Books and Stationary",
-    "Sports and Outdoor",
-    "Automotive",
-    "Health and fitness",
-    "Food and Beverages",
-    "Art and collectibles",
-    "Digital Product",
-    "Services",
-  ];
+  // Handle image preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      const fileURL = URL.createObjectURL(file);
+      setPreview(fileURL);
+    }
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      title,
-      description,
-      user,
-      category,
-      price,
-      img: image,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("user", user);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("image", image);
 
-    console.log("Submitting form with data:", formData);
-
+    // Token dynamically added from the stored token (for example after login)
     const token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg";
 
+    // POST request to the API
     axios
       .post("https://backend-5kai.onrender.com/ad", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       })
       .then(() => {
@@ -61,10 +53,9 @@ const AddForm = () => {
           position: "top-center",
           autoClose: 3000,
         });
-        navigate("/getalladverts");
+        navigate("/getall");
       })
       .catch((error) => {
-        console.error("Error adding advert:", error.response || error);
         toast.error("Error adding advert. Please try again.", {
           position: "top-center",
           autoClose: 3000,
@@ -107,14 +98,22 @@ const AddForm = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-            required
           >
             <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
+            <option value="clothing">Clothing</option>
+            <option value="electronics">Electronics</option>
+            <option value="home">Home</option>
+            <option value="beauty">Beauty</option>
+            <option value="handmade">Handmade</option>
+            <option value="games">Games</option>
+            <option value="books">Books</option>
+            <option value="sports">Sports</option>
+            <option value="automotive">Automotive</option>
+            <option value="health">Health</option>
+            <option value="food">Food</option>
+            <option value="art">Art</option>
+            <option value="digital">Digital</option>
+            <option value="services">Services</option>
           </select>
 
           <input
@@ -124,15 +123,21 @@ const AddForm = () => {
             onChange={(e) => setPrice(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
-
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-
+          <div className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-sm text-gray-500"
+            />
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="mt-4 w-full h-40 object-cover rounded-lg"
+              />
+            )}
+          </div>
           <div className="flex justify-between">
             <button
               type="button"
