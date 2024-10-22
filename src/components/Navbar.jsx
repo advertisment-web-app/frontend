@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 const Navbar = () => {
   return (
-    <div className="h-[10%] flex justify-between p-4 border shadow-md bg-[white] fixed top-0 left-0 right-0 z-10">
+    <div className="h-[10%] flex justify-between p-4 border shadow-md bg-[white] fixed top-0 left-0 right-0 z-10 text-[#4C4C4C]">
       <a href="../components/Header.jsx">
         <h1 className="w-[7%] mr-[5%] text-[1.2em] font-extrabold">logo.</h1>
       </a>

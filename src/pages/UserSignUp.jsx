@@ -153,7 +153,7 @@ const UserSignUp = () => {
       const response = await apiUserSignup(formData);
       if (response.status === 200 || response.status === 201) {
         toast.success("Account created successfully!");
-        navigate("/userlogin");
+        navigate("/userviewads");
       }
     } catch (error) {
       setLoading(false);
@@ -162,7 +162,7 @@ const UserSignUp = () => {
   };
 
   return (
-    <section className="h-[100vh] bg-[#F8EEEC] pt-[7%]">
+    <section className="h-[100vh] bg-[#F8EEEC] pt-[7%] text-[#4C4C4C]">
       <div className="h-[90%] bg-[white] shadow-lg w-[70%] border ml-[15%] rounded-xl flex justify-between">
         <div className="w-[40%] border h-[95%] mt-[1.5%] ml-[1em] rounded-xl , registerSide"></div>
         <div className="w-[50%] flex flex-col">

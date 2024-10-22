@@ -14,6 +14,7 @@ import Prices from "./pages/dashboard/components/Prices";
 import About from "./components/About";
 import Resources from "./components/Resources";
 import Settings from "./pages/dashboard/components/Settings";
+import UserViewAds from "./pages/dashboard/components/UserViewAds";
 
 
 function App() {
@@ -49,6 +50,10 @@ const router=createBrowserRouter([
     {
       path: "/resources",
       element: <Resources />
+    },
+    {
+      path: "/userviewads",
+      element: <UserViewAds/>
     },
    {
       path: "/dashboard",

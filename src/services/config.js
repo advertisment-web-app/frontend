@@ -1,7 +1,12 @@
 import axios from "axios"
 
-const baseUrl = import.meta.env.VITE_BASE_URL
+const token = localStorage.getItem("authToken");
 
 export const apiClient = axios.create({
-    baseURL:baseUrl,
-})
+    baseURL : import.meta.env.VITE_BASE_URL,
+    headers:{
+        "Content-Type" : "application/json",
+        Authorization:`Bearer ${token}`
+    },
+});
+

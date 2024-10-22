@@ -39,7 +39,7 @@ const VendorLogin = () => {
   };
 
   return (
-    <section id="vendorLogin" className="h-[100vh] pt-[7%]">
+    <section id="vendorLogin" className="h-[100vh] pt-[7%] text-[#4C4C4C]">
       <div className="h-[90%] bg-[white] shadow-lg w-[70%] border ml-[15%] rounded-xl flex justify-between">
         <div className="w-[40%] border h-[95%] mt-[1.5%] ml-[1em] rounded-xl , registerSide">
 
