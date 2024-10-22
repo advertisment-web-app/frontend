@@ -1,93 +1,137 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-import backgroundImage from '../../../assets/images/getallbg.jpg';
-import { FaPlus } from 'react-icons/fa'; 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
+import { toast } from "react-toastify";
+import backgroundImage from "../../../assets/images/usergetall.jpg";
 
 const VendorGet = () => {
   const [adverts, setAdverts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredAdverts, setFilteredAdverts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [advertsPerPage] = useState(6);
   const navigate = useNavigate();
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg';
 
+  // Fetch adverts from the API
   useEffect(() => {
     const fetchAdverts = async () => {
       try {
-        const response = await axios.get('https://backend-5kai.onrender.com/getallad', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setAdverts(response.data.filter(advert => advert.user === '6712df80df25face71f07e43')); // Replace with dynamic user ID
+        // Get the token from localStorage
+        const token = localStorage.getItem("authToken");
+        
+        if (!token) {
+          toast.error("No token found. Please log in.");
+          navigate("/login");
+          return;
+        }
+
+        const response = await axios.get(
+          "https://backend-5kai.onrender.com/getallad",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAdverts(response.data);
+        setFilteredAdverts(response.data); // Initialize with all adverts
       } catch (error) {
-        console.error('Error fetching adverts:', error);
+        toast.error("Failed to fetch adverts");
+        console.error("Error fetching adverts:", error);
       }
     };
 
     fetchAdverts();
-  }, []);
+  }, [navigate]);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://backend-5kai.onrender.com/ad/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setAdverts(adverts.filter(advert => advert.id !== id)); // Assuming `_id` is the correct field for ID
-    } catch (error) {
-      console.error('Error deleting advert:', error);
-    }
+  // Search adverts by title or category
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    const filtered = adverts.filter(
+      (advert) =>
+        advert.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        advert.category.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredAdverts(filtered);
+  };
+
+  // Pagination: Get current adverts
+  const indexOfLastAdvert = currentPage * advertsPerPage;
+  const indexOfFirstAdvert = indexOfLastAdvert - advertsPerPage;
+  const currentAdverts = filteredAdverts.slice(
+    indexOfFirstAdvert,
+    indexOfLastAdvert
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Handle advert click to navigate to single advert page
+  const handleAdvertClick = (id) => {
+    navigate(`/advert/${id}`);
   };
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center relative p-8 top-14"
-      style={{ backgroundImage: `url(${backgroundImage})` }} 
+      className="container mx-auto p-4"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+      }}
     >
-      <button
-        className="absolute top-4 right-4 bg-orange-500 text-white p-4 rounded-full shadow-lg hover:bg-purple-600"
-        onClick={() => navigate("addform")}
-      >
-        <FaPlus className="text-2xl" />
-      </button>
+      <h1 className="text-3xl text-white font-bold mb-4">Adverts</h1>
 
-      <div className='flex justify-center mb-6'>
-        <h1 className="text-3xl font-bold text-white bg-orange-500 border border-purple-700 rounded-md py-2 px-4 inline-block shadow-lg">
-          Your Adverts
-        </h1>
+      {/* Search Bar */}
+      <div className="flex items-center mb-4 bg-orange-500 rounded-md shadow-md overflow-hidden">
+        <input
+          type="text"
+          placeholder="Search by title or category"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="p-2 w-full border-none focus:outline-none"
+        />
+        <FaSearch className="ml-2 text-gray-500" />
       </div>
 
-      {adverts.length === 0 ? (
-        <p className="text-center text-xl text-white">No added adverts yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {adverts.map((advert) => (
-            <div key={advert._id} className="bg-white rounded-lg shadow-lg p-4">
-              <img
-                src={advert.img} 
-                alt={advert.title}
-                className="w-full h-64 object-cover rounded-lg cursor-pointer"
-                onClick={() => navigate(`/advert/${advert.id}`)}
-              />
-              <div className="mt-4">
-                <h2 className="text-xl font-bold">{advert.title}</h2>
-                <p className="text-gray-600 mt-2">{advert.description}</p>
+      {/* Advert Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {currentAdverts.map((advert) => (
+          <div
+            key={advert._id}
+            className="border bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
+            onClick={() => handleAdvertClick(advert._id)} // Updated to use _id
+          >
+            <img
+              src={advert.image}
+              alt={advert.title}
+              className="w-full h-48 object-cover rounded-md mb-2"
+            />
+            <h2 className="text-xl font-bold">{advert.title}</h2>
+            <p className="text-gray-700">{advert.category}</p>
+            <p className="text-gray-900 font-semibold">${advert.price}</p>
+          </div>
+        ))}
+      </div>
 
-                <div className="flex justify-between items-center mt-4">
-                  <button
-                    onClick={() => navigate(`/advert/update/${advert.id}`)} 
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(advert.id)} // Handle advert deletion
-                    className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Pagination */}
+      <div className="flex justify-center mt-6">
+        {[...Array(Math.ceil(filteredAdverts.length / advertsPerPage)).keys()].map((number) => (
+          <button
+            key={number}
+            onClick={() => paginate(number + 1)}
+            className={`px-4 py-2 mx-1 rounded-md ${
+              currentPage === number + 1
+                ? "bg-orange-500 text-white"
+                : "bg-gray-300"
+            } transition-colors duration-300`}
+          >
+            {number + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

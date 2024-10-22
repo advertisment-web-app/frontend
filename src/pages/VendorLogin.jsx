@@ -30,11 +30,8 @@ const VendorLogin = () => {
       if (response.status === 200 || response.status === 201) {
         const token = response.data.token;
 
-        // Store token in localStorage
-        localStorage.setItem(
-          "authToken",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg"
-        );
+       // Save the token to localStorage
+       localStorage.setItem("authToken", token);
 
         toast.success("You have logged in successfully");
         navigate("/dashboard");

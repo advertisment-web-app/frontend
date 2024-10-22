@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import backgroundImage from "../../assets/images/usergetall.jpg";
+import backgroundImage from '../../assets/images/usergetall.jpg';
 
 const GetAllAdverts = () => {
   const [adverts, setAdverts] = useState([]);
@@ -66,13 +66,12 @@ const GetAllAdverts = () => {
   };
 
   return (
-    <div
-      className="container mx-auto p-4"
-      style={{
+    <div className="container mx-auto p-4"
+    style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
       }}
     >
       <h1 className="text-3xl text-white font-bold mb-4">Adverts</h1>
@@ -105,6 +104,7 @@ const GetAllAdverts = () => {
             <h2 className="text-xl font-bold">{advert.title}</h2>
             <p className="text-gray-700">{advert.category}</p>
             <p className="text-gray-900 font-semibold">${advert.price}</p>
+            
           </div>
         ))}
       </div>

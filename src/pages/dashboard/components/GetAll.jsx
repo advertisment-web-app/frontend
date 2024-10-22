@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
-import backgroundImage from '../../../assets/images/getallbg.jpg';
+import backgroundImage from '../../../assets/images/usergetall.jpg';
 import { FaPlus } from 'react-icons/fa'; 
 
 

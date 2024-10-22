@@ -19,6 +19,7 @@ import SingleAdvert from "./pages/singleadd";
 import VendorGet from "./pages/dashboard/components/Vendorget";
 
 
+
 function App() {
 const router=createBrowserRouter([
   {
@@ -61,13 +62,17 @@ const router=createBrowserRouter([
       path:"/advert/:id",
       element:<SingleAdvert />
     },
+    {
+      path:"/vendorget",
+      element:<VendorGet />
+    },
    {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
         {
           index: true,
-          element: <VendorGet />
+          element: <GetAll />
         },
         {
           path: "addform",
