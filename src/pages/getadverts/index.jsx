@@ -3,18 +3,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import backgroundImage from "../../assets/images/usergetall.jpg";
+import backgroundImage from "../../assets/images/bgg.jpg";
 
 const GetAllAdverts = () => {
   const [adverts, setAdverts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAdverts, setFilteredAdverts] = useState([]); 
+  const [filteredAdverts, setFilteredAdverts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [advertsPerPage] = useState(6);
   const navigate = useNavigate();
 
   // Fetch adverts from the API
-  useEffect(() => { 
+  useEffect(() => {
     const fetchAdverts = async () => {
       try {
         // Get the token from localStorage
@@ -100,7 +100,7 @@ const GetAllAdverts = () => {
         {currentAdverts.map((advert) => (
           <div
             key={advert._id}
-            className="border bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
+            className="border bg-white bg-opacity-80 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img
@@ -109,8 +109,8 @@ const GetAllAdverts = () => {
               className="w-full h-48 object-cover rounded-md mb-2"
             />
             <h2 className="text-xl font-bold">{advert.title}</h2>
-            <p className="text-gray-700">{advert.category}</p>
-            <p className="text-gray-900 font-semibold">${advert.price}</p>
+            <p className="text-black">{advert.category}</p>
+            <p className="text-black font-semibold">${advert.price}</p>
           </div>
         ))}
       </div>
@@ -135,11 +135,11 @@ const GetAllAdverts = () => {
       </div>
       {/* Home Button */}
       <button
-          onClick={() => navigate("/dashboard")} // Navigate to dashboard
-          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-        >
-          Go to Dashboard
-        </button>
+        onClick={() => navigate("/dashboard")} // Navigate to dashboard
+        className="mt-6 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-800"
+      >
+        Go to Dashboard
+      </button>
     </div>
   );
 };

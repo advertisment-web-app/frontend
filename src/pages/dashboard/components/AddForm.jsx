@@ -75,7 +75,10 @@ const AddForm = () => {
         position: "top-center",
         autoClose: 3000,
       });
+     // Delay navigation to allow the toast to show
+     setTimeout(() => {
       navigate("/dashboard");
+    }, 3000); // Wait for 3 seconds before navigating
     } catch (error) {
       console.error("Error adding advert:", error.response || error);
       toast.error("Error adding advert. Please try again.", {
@@ -153,14 +156,14 @@ const AddForm = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600"
+              className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-purple-800"
               onClick={() => navigate("/dashboard")}
             >
               Back to Home
             </button>
             <button
               type="submit"
-              className="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600"
+              className="bg-purple-800 text-white py-2 px-4 rounded-lg hover:bg-orange-500"
             >
               Submit
             </button>

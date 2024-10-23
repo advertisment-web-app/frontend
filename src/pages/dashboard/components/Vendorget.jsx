@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import backgroundImage from "../../../assets/images/getallbg.jpg";
+import backgroundImage from "../../../assets/images/aboutbg.jpg";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -64,7 +64,9 @@ const VendorGet = () => {
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    const confirmDelete = window.confirm("Are you sure you want to delete this advert?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this advert?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -72,7 +74,17 @@ const VendorGet = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAdverts(adverts.filter((advert) => advert.id !== id));
-      toast.success("Advert deleted successfully!");
+
+      // Show the success toast
+      toast.success("Advert deleted successfully!", {
+        onClose: () => {
+          // After the toast closes, refresh the page
+          setTimeout(() => {
+            navigate("/dashboard");
+            window.location.reload();
+          }, 500); // Short delay to ensure smooth transition
+        },
+      });
     } catch (error) {
       toast.error("Not Authorized to Delete This Advert");
     }
@@ -84,28 +96,30 @@ const VendorGet = () => {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <button
-        className="absolute top-4 right-4 bg-orange-500 text-white p-4 rounded-full shadow-lg hover:bg-purple-600"
+        className="absolute top-4 right-4 bg-purple-800 text-white p-4 rounded-full shadow-lg hover:bg-orange-500"
         onClick={() => navigate("addform")}
       >
         <FaPlus className="text-2xl" />
       </button>
 
       <div className="flex justify-center mb-6">
-        <h1 className="text-3xl font-bold text-white bg-orange-500 border border-purple-700 rounded-md py-2 px-4 inline-block shadow-lg">
+        <h1 className="text-3xl font-bold text-white bg-purple-800 border border-orange-500 rounded-md py-2 px-4 inline-block shadow-lg">
           Your Adverts
         </h1>
       </div>
 
       {/* Search Bar */}
-      <div className="flex items-center mb-4 bg-orange-500 rounded-md shadow-md overflow-hidden">
-        <input
-          type="text"
-          placeholder="Search by title or category"
-          value={searchTerm}
-          onChange={handleSearch}
-          className="p-2 w-full border-none focus:outline-none"
-        />
-        <FaSearch className="ml-2 text-gray-500" />
+      <div className="flex justify-center mb-6">
+        <div className="flex items-center bg-transparent border-4 border-purple-800 rounded-full p-2 shadow-lg w-3/4 sm:w-1/2 md:w-1/3">
+          <input
+            type="text"
+            placeholder="Search by title or category"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="bg-transparent text-white placeholder-white w-full p-2 focus:outline-none"
+          />
+          <FaSearch className="text-white ml-2" />
+        </div>
       </div>
 
       {currentAdverts.length === 0 ? (
@@ -113,7 +127,10 @@ const VendorGet = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {currentAdverts.map((advert) => (
-            <div key={advert.id} className="bg-white rounded-lg shadow-lg p-4">
+            <div
+              key={advert.id}
+              className="bg-white bg-opacity-60 rounded-lg shadow-lg p-4"
+            >
               <img
                 src={advert.img || "/src/assets/images/default.jpg"} // Default image fallback
                 alt={advert.title}
@@ -127,13 +144,13 @@ const VendorGet = () => {
                 <div className="flex justify-between items-center mt-4">
                   <button
                     onClick={() => navigate(`updateadvert/${advert.id}`)}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                    className="bg-purple-800 text-white py-2 px-4 rounded-md hover:bg-orange-500"
                   >
                     Update
                   </button>
                   <button
                     onClick={() => handleDelete(advert.id)}
-                    className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                    className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-800"
                   >
                     Delete
                   </button>
@@ -152,7 +169,7 @@ const VendorGet = () => {
             onClick={() => paginate(index + 1)}
             className={`px-4 py-2 mx-1 rounded-md ${
               currentPage === index + 1
-                ? "bg-orange-500 text-white"
+                ? "bg-purple-800 text-white"
                 : "bg-gray-300"
             } transition-colors duration-300`}
           >

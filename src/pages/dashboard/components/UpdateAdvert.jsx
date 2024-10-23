@@ -66,7 +66,7 @@ const UpdateAdvert = () => {
     // Show confirmation toast with Yes/No buttons
     const confirmToast = toast.info(
       <div>
-        <p>Are you sure you want to update?</p>
+        {/* <p>Are you sure you want to update?</p> */}
         <button
           onClick={async () => {
             toast.dismiss(confirmToast); // Dismiss the confirmation toast
@@ -88,7 +88,7 @@ const UpdateAdvert = () => {
               console.error("Error updating advert:", error);
             }
           }}
-          className="bg-green-500 text-white px-2 py-1 rounded-md mx-1"
+          className="bg-purple-800 text-white px-2 py-1 rounded-md mx-1"
         >
           Yes
         </button>
@@ -97,7 +97,7 @@ const UpdateAdvert = () => {
             toast.dismiss(confirmToast); // Dismiss the confirmation toast
             navigate("/dashboard"); // Go back to dashboard
           }}
-          className="bg-red-500 text-white px-2 py-1 rounded-md mx-1"
+          className="bg-orange-500 text-white px-2 py-1 rounded-md mx-1"
         >
           No
         </button>
@@ -190,7 +190,7 @@ const UpdateAdvert = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+            className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg hover:bg-orange-500"
           >
             Update Advert
           </button>
