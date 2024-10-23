@@ -1,170 +1,203 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import backgroundImage from '../../../assets/images/update.jpg';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateAdvert = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [user, setUser] = useState(''); // Set this to the logged-in user
-  const [date, setDate] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState('');
-  const { id } = useParams(); // Get advert ID from URL params
+  const { id } = useParams(); 
   const navigate = useNavigate();
+  const [advert, setAdvert] = useState({
+    title: "",
+    description: "",
+    category: "",
+    img: "",
+    price: "",
+  });
 
-  // Fetch advert details when the component mounts
+  // Fetch the advert details
   useEffect(() => {
-    axios.get(`/api/adverts/${id}`)
-      .then((response) => {
-        const advert = response.data;
-        setTitle(advert.title);
-        setDescription(advert.description);
-        setUser(advert.user);
-        setDate(advert.date);
-        setPrice(advert.price);
-        setPreview(advert.image);
-      })
-      .catch((error) => {
-        console.error('Error fetching advert details:', error);
-        setAlertMessage('Failed to load advert details.');
-        setAlertType('error');
-      });
+    const fetchAdvert = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log("Token retrieved:", token); // Log the token
+
+        const response = await axios.get(
+          `https://backend-5kai.onrender.com/getad/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setAdvert(response.data);
+      } catch (error) {
+        console.error("Error fetching advert:", error);
+      }
+    };
+
+    fetchAdvert();
   }, [id]);
 
-  // Handling image change and preview
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      const fileURL = URL.createObjectURL(file);
-      setPreview(fileURL);
-    }
+  // Handle input changes
+  const handleChange = (e) => {
+    setAdvert({ ...advert, [e.target.name]: e.target.value });
   };
 
-  // Handling form submission to update advert
-  const handleSubmit = (e) => {
+  // Handle form submit
+  useEffect(() => {
+    // Show the confirmation toast when the form loads
+    const toastId = toast.info("Are you sure you want to update?", {
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+      progress: undefined,
+      pauseOnHover: true,
+      position: "top-right",
+      // Show an "OK" button
+      onClose: () => toast.dismiss(toastId),
+    });
+
+    // Remove the toast when the component unmounts
+    return () => toast.dismiss(toastId);
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!title || !description || !user || !date || !price) {
-      setAlertMessage('Please fill in all fields.');
-      setAlertType('error');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('user', user);
-    formData.append('date', date);
-    formData.append('price', price);
-
-    if (image) {
-      formData.append('image', image); // Add image only if it was changed
-    }
-
-    // Make the PUT request to update the advert
-    axios.put(`/api/adverts/${id}`, formData)
-      .then(() => {
-        setAlertMessage('Advert updated successfully!');
-        setAlertType('success');
-        setTimeout(() => navigate('/getall'), 2000); // Redirect after 2 seconds
-      })
-      .catch((error) => {
-        console.error('Error updating advert:', error);
-        setAlertMessage('Failed to update advert.');
-        setAlertType('error');
-      });
+  
+    // Show confirmation toast with Yes/No buttons
+    const confirmToast = toast.info(
+      <div>
+        <p>Are you sure you want to update?</p>
+        <button
+          onClick={async () => {
+            toast.dismiss(confirmToast); // Dismiss the confirmation toast
+            try {
+              const token = localStorage.getItem("token");
+              await axios.patch(
+                `https://backend-5kai.onrender.com/updatead/${id}`,
+                advert,
+                {
+                  headers: { Authorization: `Bearer ${token}` },
+                }
+              );
+              toast.success("Advert updated successfully!");
+              setTimeout(() => {
+                navigate("/dashboard");
+              }, 2000); // Adjust the delay as needed
+            } catch (error) {
+              toast.error("Not Authorized to Update This Advert");
+              console.error("Error updating advert:", error);
+            }
+          }}
+          className="bg-green-500 text-white px-2 py-1 rounded-md mx-1"
+        >
+          Yes
+        </button>
+        <button
+          onClick={() => {
+            toast.dismiss(confirmToast); // Dismiss the confirmation toast
+            navigate("/dashboard"); // Go back to dashboard
+          }}
+          className="bg-red-500 text-white px-2 py-1 rounded-md mx-1"
+        >
+          No
+        </button>
+      </div>,
+      { closeButton: false, autoClose: false }
+    );
   };
+  
+  
+
 
   return (
     <div
-      className="h-screen flex items-center justify-center bg-cover bg-center mt-16"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
+      className="relative bg-cover bg-center h-screen"
+      style={{ backgroundImage: `url(/src/assets/images/about.jpg)` }}
     >
-      <div className="w-[40%] p-8 bg-white bg-opacity-50 shadow-lg rounded-md">
-        <h2 className="text-2xl font-bold mb-4">Update Advert</h2>
+      <div className="flex items-center justify-center h-full">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+        >
+          <h2 className="text-2xl font-bold mb-6">Update Advert</h2>
 
-        {/* Stylish Alert */}
-        {alertMessage && (
-          <div
-            className={`p-4 mb-4 text-white font-bold rounded-lg transition-all duration-500 ${
-              alertType === 'success' ? 'bg-green-500' : 'bg-red-500'
-            }`}
-          >
-            {alertMessage}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="block mb-2">Title</label>
           <input
             type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            name="title"
+            value={advert.title}
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border rounded-lg"
           />
+
+          <label className="block mb-2">Description</label>
           <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          ></textarea>
+            name="description"
+            value={advert.description}
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border rounded-lg"
+          />
+
+          <label className="block mb-2">Category</label>
+          <select
+            name="category"
+            value={advert.category}
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border rounded-lg"
+          >
+            <option value="">Select Category</option>
+            <option value="clothing and accessories">
+              Clothing and accessories
+            </option>
+            <option value="Electronics and gadgets">
+              Electronics and gadgets
+            </option>
+            <option value="Home and living">Home and living</option>
+            <option value="Beauty and personal care">
+              Beauty and personal care
+            </option>
+            <option value="Handmade and Craft Items">
+              Handmade and Craft Items
+            </option>
+            <option value="Toys and games">Toys and games</option>
+            <option value="Books and Stationary">Books and Stationary</option>
+            <option value="Sports and Outdoor">Sports and Outdoor</option>
+            <option value="Automotive">Automotive</option>
+            <option value="Health and fitness">Health and fitness</option>
+            <option value="Food and Beverages">Food and Beverages</option>
+            <option value="Art and collectibles">Art and collectibles</option>
+            <option value="Digital Product">Digital Product</option>
+            <option value="Services">Services</option>
+          </select>
+
+          <label className="block mb-2">Image URL</label>
           <input
             type="text"
-            placeholder="User"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            name="img"
+            value={advert.img}
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border rounded-lg"
           />
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
+
+          <label className="block mb-2">Price</label>
           <input
             type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            name="price"
+            value={advert.price}
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border rounded-lg"
           />
-          <div className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full text-sm text-gray-500"
-            />
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-4 w-full h-40 object-cover rounded-lg"
-              />
-            )}
-          </div>
-          <div className="flex justify-between">
-            <button
-              type="button"
-              className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600"
-              onClick={() => navigate('/')}
-            >
-              Back to Home
-            </button>
-            <button
-              type="submit"
-              className="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600"
-            >
-              Update Advert
-            </button>
-          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          >
+            Update Advert
+          </button>
         </form>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

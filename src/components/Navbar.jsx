@@ -12,7 +12,7 @@ const Navbar = () => {
       </a>
       <ul className="flex justify-between align-center w-[30%] font-bold">
         <li>
-          <a href="/">Home</a>
+          <a href="/dashboard">Home</a>
         </li>
         <li>
           <a href="/about">About</a>

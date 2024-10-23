@@ -1,39 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaCog, FaPlus, FaDollarSign, FaEdit } from "react-icons/fa"; // Added FaEdit icon
+import { FaCog, FaPlus, FaDollarSign, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import defaultProfilePic from "../assets/images/profilePic.jpg";
+import { toast } from "react-toastify";
 
-const ProfileCard = ({ vendor = {} }) => {
+const ProfileCard = () => {
+  const [profile, setProfile] = useState({});
   const [profilePic, setProfilePic] = useState(defaultProfilePic);
   const [advertsCount, setAdvertsCount] = useState(0);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (vendor?.id) {
-      // Fetch the number of adverts added by the vendor
-      axios
-        .get(`/api/adverts/vendor/${vendor.id}`)
-        .then((response) => setAdvertsCount(response.data.length))
-        .catch((error) =>
-          console.error("Error fetching adverts count:", error)
-        );
-    }
-  }, [vendor.id]);
+  const token = localStorage.getItem("token");
+
+  // // Fetch vendor profile
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://backend-5kai.onrender.com/profile",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       setProfile(response.data);
+
+  //     //   // Fetch number of adverts by vendor
+  //     //   const advertsResponse = await axios.get(
+  //     //     `https://backend-5kai.onrender.com/getallad?user=${response.data.id}`,
+  //     //     {
+  //     //       headers: {
+  //     //         Authorization: `Bearer ${token}`,
+  //     //       },
+  //     //     }
+  //     //   );
+  //     //   setAdvertsCount(advertsResponse.data.length);
+  //     // } catch (error) {
+  //     //   toast.error("Failed to fetch profile or adverts.");
+  //     //   console.error("Error fetching profile or adverts:", error);
+  //     // }
+  //   };
+  //   fetchProfile();
+  // }, [token]);
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const fileURL = URL.createObjectURL(file);
-      setProfilePic(fileURL);
+      setProfilePic(fileURL); // Update the profile picture locally
     }
   };
 
+  // Logout
   const handleLogout = () => {
-    axios
-      .post("/api/logout")
-      .then(() => navigate("/login"))
-      .catch((error) => console.error("Error logging out:", error));
+    localStorage.removeItem("token");
+    navigate("/vendorlogin");
   };
 
   return (
@@ -45,7 +68,7 @@ const ProfileCard = ({ vendor = {} }) => {
           alt="Profile"
           className="w-28 h-28 rounded-full object-cover"
         />
-        {/* Edit button icon */}
+        {/* Edit button */}
         <label className="absolute bottom-0 right-0 bg-white rounded-full p-2 border border-gray-300 cursor-pointer">
           <FaEdit className="text-gray-600" />
           <input
@@ -58,12 +81,12 @@ const ProfileCard = ({ vendor = {} }) => {
       </div>
 
       {/* Vendor Name */}
-      <h2 className="text-xl font-bold text-gray-800">
-        {vendor.name || "Vendor Name"}
-      </h2>
+      {/* <h2 className="text-xl font-bold text-gray-800">
+        {profile.firstname} {profile.lastname}
+      </h2> */}
 
       {/* Number of Adverts */}
-      <p className="text-gray-500 mt-2">Adverts Added: {advertsCount}</p>
+      {/* <p className="text-gray-500 mt-2">Adverts Added: {advertsCount}</p> */}
 
       {/* Links */}
       <div className="mt-4 w-full">
@@ -81,7 +104,6 @@ const ProfileCard = ({ vendor = {} }) => {
           <FaDollarSign className="mr-2" /> View Prices
         </button>
 
-        {/* Add Advert Button */}
         <button
           className="flex items-center justify-between w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-500"
           onClick={() => navigate("settings")}

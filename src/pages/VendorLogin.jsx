@@ -27,20 +27,18 @@ const VendorLogin = () => {
 
     try {
       const response = await apiVendorLogin(data);
+      console.log("Response:", response.data); // Log the response data
       if (response.status === 200 || response.status === 201) {
-        const token = response.data.token;
+        const token = response.data.accessToken; // Changed from token to accessToken
 
-        // Store token in localStorage
-        localStorage.setItem(
-          "authToken",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg"
-        );
+        // Save token in local storage
+        localStorage.setItem("token", token);
 
         toast.success("You have logged in successfully");
         navigate("/dashboard");
       }
     } catch (error) {
-      setLogging(true);
+      setLogging(false);
       toast.error("Failed to log in. Please try again.");
     }
   };

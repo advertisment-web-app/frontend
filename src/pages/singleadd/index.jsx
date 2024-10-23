@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import backgroundImage from "../../assets/images/usergetone.jpg";
 
 const SingleAdvert = () => {
   const { id } = useParams();
   const [advert, setAdvert] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchAdvert = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg";
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          toast.error("Authorization token missing.");
+          return;
+        }
+
         const response = await axios.get(
           `https://backend-5kai.onrender.com/getad/${id}`,
           {
@@ -54,6 +61,13 @@ const SingleAdvert = () => {
         <p className="text-lg font-bold mt-4">Category: {advert.category}</p>
         <p className="text-lg font-bold mt-2">Price: ${advert.price}</p>
       </div>
+      {/* Home Button */}
+      <button
+          onClick={() => navigate("/dashboard")} // Navigate to dashboard
+          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        >
+          Go to Dashboard
+        </button>
     </div>
   );
 };

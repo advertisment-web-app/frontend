@@ -8,17 +8,23 @@ import backgroundImage from "../../assets/images/usergetall.jpg";
 const GetAllAdverts = () => {
   const [adverts, setAdverts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredAdverts, setFilteredAdverts] = useState([]);
+  const [filteredAdverts, setFilteredAdverts] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
   const [advertsPerPage] = useState(6);
   const navigate = useNavigate();
 
   // Fetch adverts from the API
-  useEffect(() => {
+  useEffect(() => { 
     const fetchAdverts = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg"; // Add your token
+        // Get the token from localStorage
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          toast.error("Authorization token missing.");
+          return;
+        }
+
         const response = await axios.get(
           "https://backend-5kai.onrender.com/getallad",
           {
@@ -84,7 +90,7 @@ const GetAllAdverts = () => {
           placeholder="Search by title or category"
           value={searchTerm}
           onChange={handleSearch}
-          className="p-2 w-full  border-none focus:outline-none"
+          className="p-2 w-full border-none focus:outline-none"
         />
         <FaSearch className="ml-2 text-gray-500" />
       </div>
@@ -98,7 +104,7 @@ const GetAllAdverts = () => {
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img
-              src={advert.image}
+              src={advert.img ? advert.img : "/src/assets/images/default.jpg"} // Fallback to default image
               alt={advert.title}
               className="w-full h-48 object-cover rounded-md mb-2"
             />
@@ -127,6 +133,13 @@ const GetAllAdverts = () => {
           </button>
         ))}
       </div>
+      {/* Home Button */}
+      <button
+          onClick={() => navigate("/dashboard")} // Navigate to dashboard
+          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        >
+          Go to Dashboard
+        </button>
     </div>
   );
 };
