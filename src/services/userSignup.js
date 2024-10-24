@@ -1,5 +1,5 @@
 import { apiClient } from "./config"
 
-export const apiUserSignup = (payload) => {
-    return apiClient.post("/register", payload)
+export const apiUserSignup = async (payload) => {
+    return await apiClient.post("/register", payload)
 }

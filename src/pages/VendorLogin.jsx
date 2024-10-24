@@ -31,8 +31,10 @@ const VendorLogin = () => {
       if (response.status === 200 || response.status === 201) {
         const token = response.data.accessToken; // Changed from token to accessToken
 
+
         // Save token in local storage
         localStorage.setItem("token", token);
+
 
         toast.success("You have logged in successfully");
         navigate("/dashboard");
@@ -92,7 +94,7 @@ const VendorLogin = () => {
             </form>
             <p className="text-center">
               Don't have an account?{" "}
-              <Link className="text-[#9932CC]" to="/usersignup">
+              <Link className="text-[#9932CC]" to="/vendorsignup">
                 Sign Up
               </Link>
             </p>

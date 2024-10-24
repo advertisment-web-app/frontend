@@ -180,26 +180,32 @@ const UserSignUp = () => {
             <h2 className=" font-semibold bg-[white] mt-[-0.8em] w-[10%] px-[8px] h-[5%] ml-[45%]">OR</h2>
 
             <form className="h-[60%] p-[0.5em] flex flex-col" onSubmit={handleSubmit}>
-              <label>Enter username</label>
-              <div className="h-[20%]">
-                <input
-                  type="text"
-                  name="firstname"
-                  placeholder="First name"
-                  className="rounded-md border w-[45%] h-[80%] mb-[0.5em] mr-[10%]"
-                  value={formData.firstname || ''}
-                  onChange={handleInputChange}
-                  required
-                />
+            <div className="flex h-[30%]">
+              <div className="flex flex-col">
+              <label>First name</label>
+              <input
+                type="text"
+                name="firstname"
+                placeholder="First name"
+                className="rounded-md border w-[90%] h-[100%] mb-[0.5em] mr-[10%]"
+                value={formData.firstname || ''}
+                onChange={handleInputChange}
+                required
+              />
+
+              </div >
+                <div className="flex flex-col">
+                <label>Last name</label>
                 <input
                   type="text"
                   name="lastname"
                   placeholder="Last name"
-                  className="rounded-md border w-[45%] h-[80%] mb-[0.5em]"
+                  className="rounded-md border w-[90%] h-[100%] mb-[0.5em]"
                   value={formData.lastname || ''}
                   onChange={handleInputChange}
                   required
                 />
+                </div>
               </div>
 
               <label htmlFor="email">Enter email</label>

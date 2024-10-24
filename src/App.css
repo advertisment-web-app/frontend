@@ -34,3 +34,11 @@
   background-size: cover;
   background-position:center;
 }
+
+.advert-image {
+  width: 100%;              /* Full width */
+  height: 200px;            /* Fixed height */
+  object-fit: cover;        /* Preserve aspect ratio, cropping if needed */
+  border-radius: 10px;      /* Optional: Add some rounding to the image */
+  display: block;           /* Ensures it behaves like a block element */
+}

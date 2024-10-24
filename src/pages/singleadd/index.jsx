@@ -12,12 +12,14 @@ const SingleAdvert = () => {
   useEffect(() => {
     const fetchAdvert = async () => {
       try {
+
         const token = localStorage.getItem("token");
 
         if (!token) {
           toast.error("Authorization token missing.");
           return;
         }
+
 
         const response = await axios.get(
           `https://backend-5kai.onrender.com/getad/${id}`,

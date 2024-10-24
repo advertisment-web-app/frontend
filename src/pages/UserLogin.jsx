@@ -27,6 +27,10 @@ const UserLogin = () => {
       const response = await apiUserLogin(data);
       console.log(response);
       if(response.status==200 || response.status==201){
+        const token = response.data.accessToken;
+
+        localStorage.setItem("token",token);
+        
         toast.success("You have logged in successfuly");
         navigate("/userviewads");
       }}

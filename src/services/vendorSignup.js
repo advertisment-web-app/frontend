@@ -1,4 +1,4 @@
 import { apiClient } from "./config";
-export const apiVendorSignup = (payload)=>{
-    return apiClient.post("register",payload);
+export const apiVendorSignup =async (payload)=>{
+    return await apiClient.post("/register",payload);
 }

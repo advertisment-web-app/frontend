@@ -21,14 +21,14 @@ const UserNavbar = () => {
 
             <ul className="flex justify-between align-center w-[20%] font-bold">
                 <li>
-                    <a href="/">Home</a>
+                    <a href="/userviewads">Home</a>
                 </li>
-                <li>
-                    <a href="/about">Categories</a>
+                {/* <li>
+                    <a href="">Categories</a>
                 </li>
                 <li>
                     <a href="/about">View Ads</a>
-                </li>
+                </li> */}
             </ul>
 
 
