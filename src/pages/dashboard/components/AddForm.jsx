@@ -37,7 +37,7 @@ const AddForm = () => {
     e.preventDefault();
     try {
       // Get token from localStorage
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       console.log("Token retrieved:", token); // Log the token
 
       if (!token) {
@@ -53,9 +53,9 @@ const AddForm = () => {
 
       // Use either uploaded image file or the image URL
       // if (imageFile) {
-        // formData.append("img", imageFile); // For file upload
+      // formData.append("img", imageFile); // For file upload
       // } else if (imageURL) {
-        formData.append("img", imageURL); // For URL
+      formData.append("img", imageURL); // For URL
       // }
 
       // API call
@@ -65,7 +65,7 @@ const AddForm = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
             // "Content-Type": "multipart/form-data", // Required for file uploads
           },
         }
@@ -75,10 +75,10 @@ const AddForm = () => {
         position: "top-center",
         autoClose: 3000,
       });
-     // Delay navigation to allow the toast to show
-     setTimeout(() => {
-      navigate("/dashboard");
-    }, 3000); // Wait for 3 seconds before navigating
+      // Delay navigation to allow the toast to show
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000); // Wait for 3 seconds before navigating
     } catch (error) {
       console.error("Error adding advert:", error.response || error);
       toast.error("Error adding advert. Please try again.", {
@@ -136,7 +136,6 @@ const AddForm = () => {
             required
           />
 
-         
           <div className="space-y-2">
             {/* <input
               type="file"

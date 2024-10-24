@@ -100,7 +100,7 @@ const GetAllAdverts = () => {
         {currentAdverts.map((advert) => (
           <div
             key={advert._id}
-            className="border bg-white bg-opacity-80 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
+            className="border bg-white bg-opacity-90 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img

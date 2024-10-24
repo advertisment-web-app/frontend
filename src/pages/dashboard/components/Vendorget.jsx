@@ -64,31 +64,31 @@ const VendorGet = () => {
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this advert?"
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this advert?");
     if (!confirmDelete) return;
-
+  
     try {
       await axios.delete(`https://backend-5kai.onrender.com/deletedad/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAdverts(adverts.filter((advert) => advert.id !== id));
-
+      
       // Show the success toast
       toast.success("Advert deleted successfully!", {
         onClose: () => {
           // After the toast closes, refresh the page
           setTimeout(() => {
             navigate("/dashboard");
-            window.location.reload();
+            window.location.reload(); 
           }, 500); // Short delay to ensure smooth transition
-        },
+        }
       });
     } catch (error) {
       toast.error("Not Authorized to Delete This Advert");
     }
   };
+  
+  
 
   return (
     <div
@@ -127,10 +127,7 @@ const VendorGet = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {currentAdverts.map((advert) => (
-            <div
-              key={advert.id}
-              className="bg-white bg-opacity-60 rounded-lg shadow-lg p-4"
-            >
+            <div key={advert.id} className="bg-white bg-opacity-80 rounded-lg shadow-lg p-4">
               <img
                 src={advert.img || "/src/assets/images/default.jpg"} // Default image fallback
                 alt={advert.title}
@@ -139,7 +136,7 @@ const VendorGet = () => {
               />
               <div className="mt-4">
                 <h2 className="text-xl font-bold">{advert.title}</h2>
-                <p className="text-gray-600 mt-2">{advert.description}</p>
+                <p className="text-black mt-2">{advert.description}</p>
 
                 <div className="flex justify-between items-center mt-4">
                   <button

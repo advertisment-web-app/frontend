@@ -49,7 +49,7 @@ const ProfileCard = () => {
   };
 
   return (
-    <div className="w-64 bg-white shadow-lg fixed top-14 left-0 h-full p-6 flex flex-col items-center">
+    <div className="w-64 bg-purple-800 shadow-lg fixed top-14 left-0 h-full p-6 flex flex-col items-center">
       {/* Profile Picture with Edit Button */}
       <div className="relative mb-4">
         <img
@@ -69,29 +69,29 @@ const ProfileCard = () => {
       </div>
 
       {/* Vendor Name and Email */}
-      <h2 className="text-xl font-bold text-gray-800 text-center">
+      <h2 className="text-xl font-bold text-white text-center">
         {profile.firstname} {profile.lastname}
       </h2>
-      <p className="text-gray-600 text-center mt-1">{profile.email}</p>
+      <p className="text-white text-center mt-1">{profile.email}</p>
 
       {/* Links */}
-      <div className="mt-4 w-full">
+      <div className="mt-4 w-full flex flex-col items-center">
         <button
-          className="flex items-center justify-between w-full bg-purple-800 text-white py-2 px-4 rounded-md mb-3 hover:bg-orange-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md mb-2 text-sm hover:bg-orange-800"
           onClick={() => navigate("addform")}
         >
           <FaPlus className="mr-2" /> Add Advert
         </button>
 
         <button
-          className="flex items-center justify-between w-full bg-purple-800 text-white py-2 px-4 rounded-md mb-3 hover:bg-orange-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md mb-2 text-sm hover:bg-orange-800"
           onClick={() => navigate("prices")}
         >
           <FaDollarSign className="mr-2" /> View Prices
         </button>
 
         <button
-          className="flex items-center justify-between w-full bg-purple-800 text-white py-2 px-4 rounded-md hover:bg-orange-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md text-sm hover:bg-orange-800"
           onClick={() => navigate("settings")}
         >
           <FaCog className="mr-2" /> Settings
@@ -100,7 +100,7 @@ const ProfileCard = () => {
 
       {/* Logout Button */}
       <button
-        className="bg-orange-500 text-white py-2 px-4 rounded-md mt-6 hover:bg-purple-800"
+        className="bg-orange-500 text-white py-1 px-2 rounded-md mt-6 text-sm hover:bg-purple-800"
         onClick={handleLogout}
       >
         Logout
