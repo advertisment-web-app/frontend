@@ -11,8 +11,7 @@ const SingleAdvert = () => {
   useEffect(() => {
     const fetchAdvert = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg";
+        const token =localStorage.getItem("token");
         const response = await axios.get(
           `https://backend-5kai.onrender.com/getad/${id}`,
           {

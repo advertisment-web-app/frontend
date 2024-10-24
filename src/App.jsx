@@ -20,36 +20,37 @@ import UserViewAds from "./pages/dashboard/components/UserViewAds";
 import GetAllAdverts from "./pages/getadverts";
 import SingleAdvert from "./pages/singleadd";
 import VendorGet from "./pages/dashboard/components/Vendorget";
+import ViewSingleAd from "./pages/dashboard/components/ViewSingleAd";
 
 
 
 function App() {
-const router=createBrowserRouter([
-  {
-    path:"/",
-    element:<LandingPage/>
-  },
-  {
-    path:"/registerstatus",
-    element:<RegisterStatus/>
-  },
-  {
-    path:"/vendorsignup",
-    element:<VendorSignUp/>
-  },
-  {
-    path:"/vendorlogin",
-    element:<VendorLogin/>
-  },
-  {
-    path:"/usersignup",
-    element:<UserSignUp/>
-  },
-  {
-    path:"/userlogin",
-    element:<UserLogin/>
-  },
-  {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <LandingPage />
+    },
+    {
+      path: "/registerstatus",
+      element: <RegisterStatus />
+    },
+    {
+      path: "/vendorsignup",
+      element: <VendorSignUp />
+    },
+    {
+      path: "/vendorlogin",
+      element: <VendorLogin />
+    },
+    {
+      path: "/usersignup",
+      element: <UserSignUp />
+    },
+    {
+      path: "/userlogin",
+      element: <UserLogin />
+    },
+    {
       path: "/about",
       element: <About />
     },
@@ -60,17 +61,23 @@ const router=createBrowserRouter([
     {
 
       path: "/userviewads",
-      element: <UserViewAds/>
-
-      path:"/getalladverts",
-      element:<GetAllAdverts />
+      element: <UserViewAds />
     },
     {
-      path:"/advert/:id",
-      element:<SingleAdvert />
+
+      path: "/user/singlead/:id",
+      element:<ViewSingleAd/>
+    },
+    {
+      path: "/getalladverts",
+      element: <GetAllAdverts />
+    },
+    {
+      path: "/advert/:id",
+      element: <SingleAdvert />
 
     },
-   {
+    {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
@@ -94,11 +101,11 @@ const router=createBrowserRouter([
           path: "settings",
           element: <Settings />
         },
-  ],
-  },
-  
-]);
-return <RouterProvider router={router}/>
-}
+      ],
+    },
 
+  ]);
+  return <RouterProvider router={router} />
+
+}
 export default App;

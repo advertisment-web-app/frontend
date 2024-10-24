@@ -31,10 +31,7 @@ const VendorLogin = () => {
         const token = response.data.token;
 
         // Store token in localStorage
-        localStorage.setItem(
-          "authToken",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg"
-        );
+        localStorage.setItem("token",token);
 
         toast.success("You have logged in successfully");
         navigate("/dashboard");
@@ -94,7 +91,7 @@ const VendorLogin = () => {
             </form>
             <p className="text-center">
               Don't have an account?{" "}
-              <Link className="text-[#9932CC]" to="/usersignup">
+              <Link className="text-[#9932CC]" to="/vendorsignup">
                 Sign Up
               </Link>
             </p>
