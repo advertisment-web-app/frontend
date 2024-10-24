@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaCog, FaPlus, FaDollarSign, FaEdit } from "react-icons/fa"; // Added FaEdit icon
+import { FaCog, FaPlus, FaDollarSign, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import defaultProfilePic from "../assets/images/profilePic.jpg";
+import { toast } from "react-toastify";
 
-const ProfileCard = ({ vendor = {} }) => {
+const ProfileCard = () => {
+  const [profile, setProfile] = useState({});
   const [profilePic, setProfilePic] = useState(defaultProfilePic);
-  const [advertsCount, setAdvertsCount] = useState(0);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
+  // Fetch vendor profile
   useEffect(() => {
-    if (vendor?.id) {
-      // Fetch the number of adverts added by the vendor
-      axios
-        .get(`/api/adverts/vendor/${vendor.id}`)
-        .then((response) => setAdvertsCount(response.data.length))
-        .catch((error) =>
-          console.error("Error fetching adverts count:", error)
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          "https://backend-5kai.onrender.com/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-    }
-  }, [vendor.id]);
+        setProfile(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch profile.");
+        console.error("Error fetching profile:", error);
+      }
+    };
 
+    fetchProfile();
+  }, [token]);
+
+  // Handle profile picture change
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -29,15 +42,14 @@ const ProfileCard = ({ vendor = {} }) => {
     }
   };
 
+  // Logout
   const handleLogout = () => {
-    axios
-      .post("/api/logout")
-      .then(() => navigate("/login"))
-      .catch((error) => console.error("Error logging out:", error));
+    localStorage.removeItem("token");
+    navigate("/vendorlogin");
   };
 
   return (
-    <div className="w-1/6 bg-white shadow-lg absolute top-14 left-0 h-full p-6 flex flex-col items-center">
+    <div className="w-64 bg-purple-800 shadow-lg fixed top-14 left-0 h-full p-6 flex flex-col items-center">
       {/* Profile Picture with Edit Button */}
       <div className="relative mb-4">
         <img
@@ -45,7 +57,6 @@ const ProfileCard = ({ vendor = {} }) => {
           alt="Profile"
           className="w-28 h-28 rounded-full object-cover"
         />
-        {/* Edit button icon */}
         <label className="absolute bottom-0 right-0 bg-white rounded-full p-2 border border-gray-300 cursor-pointer">
           <FaEdit className="text-gray-600" />
           <input
@@ -57,33 +68,30 @@ const ProfileCard = ({ vendor = {} }) => {
         </label>
       </div>
 
-      {/* Vendor Name */}
-      <h2 className="text-xl font-bold text-gray-800">
-        {vendor.name || "Vendor Name"}
+      {/* Vendor Name and Email */}
+      <h2 className="text-xl font-bold text-white text-center">
+        {profile.firstname} {profile.lastname}
       </h2>
-
-      {/* Number of Adverts */}
-      <p className="text-gray-500 mt-2">Adverts Added: {advertsCount}</p>
+      <p className="text-white text-center mt-1">{profile.email}</p>
 
       {/* Links */}
-      <div className="mt-4 w-full">
+      <div className="mt-4 w-full flex flex-col items-center">
         <button
-          className="flex items-center justify-between w-full bg-orange-500 text-white py-2 px-4 rounded-md mb-3 hover:bg-purple-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md mb-2 text-sm hover:bg-orange-800"
           onClick={() => navigate("addform")}
         >
           <FaPlus className="mr-2" /> Add Advert
         </button>
 
         <button
-          className="flex items-center justify-between w-full bg-orange-500 text-white py-2 px-4 rounded-md mb-3 hover:bg-purple-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md mb-2 text-sm hover:bg-orange-800"
           onClick={() => navigate("prices")}
         >
           <FaDollarSign className="mr-2" /> View Prices
         </button>
 
-        {/* Add Advert Button */}
         <button
-          className="flex items-center justify-between w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-500"
+          className="flex items-center justify-center w-32 bg-orange-500 text-white py-1 px-2 rounded-md text-sm hover:bg-orange-800"
           onClick={() => navigate("settings")}
         >
           <FaCog className="mr-2" /> Settings
@@ -92,7 +100,7 @@ const ProfileCard = ({ vendor = {} }) => {
 
       {/* Logout Button */}
       <button
-        className="bg-purple-800 text-white py-2 px-4 rounded-md mt-6 hover:bg-orange-600"
+        className="bg-orange-500 text-white py-1 px-2 rounded-md mt-6 text-sm hover:bg-purple-800"
         onClick={handleLogout}
       >
         Logout

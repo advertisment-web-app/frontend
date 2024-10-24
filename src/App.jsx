@@ -1,11 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
 import LandingPage from "./pages/LandingPage";
-import RegisterStatus from './pages/RegisterStatus';
-import VendorSignUp from './pages/VendorSignUp';
-import VendorLogin from './pages/VendorLogin';
-import UserSignUp from './pages/UserSignUp';
-import UserLogin from './pages/UserLogin';
+import RegisterStatus from "./pages/RegisterStatus";
+import VendorSignUp from "./pages/VendorSignUp";
+import VendorLogin from "./pages/VendorLogin";
+import UserSignUp from "./pages/UserSignUp";
+import UserLogin from "./pages/UserLogin";
 import DashboardLayout from "./layouts/DashboardLayout";
 import GetAll from "./pages/dashboard/components/GetAll";
 import AddForm from "./pages/dashboard/components/AddForm";
@@ -22,12 +24,11 @@ import SingleAdvert from "./pages/singleadd";
 import VendorGet from "./pages/dashboard/components/Vendorget";
 import ViewSingleAd from "./pages/dashboard/components/ViewSingleAd";
 
-
-
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+
       element: <LandingPage />
     },
     {
@@ -52,15 +53,15 @@ function App() {
     },
     {
       path: "/about",
-      element: <About />
+      element: <About />,
     },
     {
       path: "/resources",
-      element: <Resources />
+      element: <Resources />,
     },
     {
-
       path: "/userviewads",
+
       element: <UserViewAds />
     },
     {
@@ -78,34 +79,41 @@ function App() {
 
     },
     {
+
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
         {
           index: true,
-          element: <VendorGet />
+          element: <VendorGet />,
         },
         {
           path: "addform",
           element: <AddForm />,
         },
         {
-          path: "updateadvert",
+          path: "updateadvert/:id",
           element: <UpdateAdvert />,
         },
         {
           path: "prices",
-          element: <Prices />
+          element: <Prices />,
         },
         {
           path: "settings",
-          element: <Settings />
+          element: <Settings />,
         },
       ],
     },
 
   ]);
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
+
 
 }
 export default App;
