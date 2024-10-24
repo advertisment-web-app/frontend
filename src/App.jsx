@@ -61,7 +61,8 @@ const router=createBrowserRouter([
 
       path: "/userviewads",
       element: <UserViewAds/>
-
+},
+{
       path:"/getalladverts",
       element:<GetAllAdverts />
     },
