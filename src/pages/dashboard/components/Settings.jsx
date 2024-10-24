@@ -1,89 +1,138 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../../../assets/images/userInnerSide.png";
+import backgroundImage from "../../../assets/images/about.jpg"; 
 
 const Settings = () => {
+  const [profile, setProfile] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    role: "vendor",
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("https://backend-5kai.onrender.com/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setProfile(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch profile");
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch("https://backend-5kai.onrender.com/update", profile, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Profile updated successfully!");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000); // Navigate after 2 seconds
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error("Error updating profile:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete your profile?");
+    if (confirmDelete) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete("https://backend-5kai.onrender.com/delete", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        toast.success("Profile deleted successfully!");
+        navigate("/"); // Navigate to the home page or login page after deletion
+      } catch (error) {
+        toast.error("Failed to delete profile");
+        console.error("Error deleting profile:", error);
+      }
+    }
+  };
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center"
+      className="h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="bg-white bg-opacity-90 rounded-lg shadow-lg max-w-4xl mx-auto p-8 mt-16">
-        <h2 className="text-3xl font-bold text-center mb-6">Settings</h2>
-        <form className="space-y-6">
-          <div>
-            <label className="block text-lg font-medium mb-1">Username</label>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your username"
-            />
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your email"
-            />
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Password</label>
-            <input
-              type="password"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your password"
-            />
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Business Name</label>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your business name"
-            />
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Business Description</label>
-            <textarea
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-              rows="3"
-              placeholder="Describe your business"
-            />
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Notification Preferences</label>
-            <select className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-              <option value="enabled">Enabled</option>
-              <option value="disabled">Disabled</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-lg font-medium mb-1">Profile Picture</label>
-            <input
-              type="file"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none"
-            />
-          </div>
-          <div className="flex justify-between mt-6">
-            <button
-              type="button"
-              onClick={() => navigate("/dashboard")}
-              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
-            >
-              Save Changes
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate("/dashboard")}
-              className="text-purple-500 underline hover:text-purple-600 transition"
-            >
-              Cancel
-            </button>
-          </div>
+      <div className="w-[40%] p-6 bg-white bg-opacity-50 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-4 text-center">Settings</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="block mb-1">First Name</label>
+          <input
+            type="text"
+            name="firstname"
+            value={profile.firstname}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <label className="block mb-1">Last Name</label>
+          <input
+            type="text"
+            name="lastname"
+            value={profile.lastname}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <label className="block mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={profile.email}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <label className="block mb-1">Password</label>
+          <input
+            type="password"
+            name="password"
+            value={profile.password}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg hover:bg-orange-500"
+          >
+            Update Profile
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-purple-800"
+          >
+            Delete Profile
+          </button>
         </form>
+
+        <ToastContainer />
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-import backgroundImage from '../../../assets/images/getallbg.jpg';
-import { FaPlus } from 'react-icons/fa'; 
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import backgroundImage from "../../../assets/images/getallbg.jpg";
+import { FaPlus } from "react-icons/fa";
 
 const GetAll = () => {
   const [adverts, setAdverts] = useState([]); // Initialize as an empty array
@@ -12,8 +11,9 @@ const GetAll = () => {
   // Fetch all added adverts from the API or local storage
   useEffect(() => {
     // You can replace this with your API call if fetching from a server
-    axios.get('/api/adverts') // Replace with your API endpoint
-      .then(response => {
+    axios
+      .get("/api/adverts") // Replace with your API endpoint
+      .then((response) => {
         // Ensure response data is an array before setting it
         if (Array.isArray(response.data)) {
           setAdverts(response.data);
@@ -21,26 +21,26 @@ const GetAll = () => {
           setAdverts([]); // Default to an empty array if response isn't an array
         }
       })
-      .catch(error => console.error('Error fetching adverts:', error));
+      .catch((error) => console.error("Error fetching adverts:", error));
   }, []);
 
   // Function to delete an advert
   const handleDelete = (id) => {
     // Replace with actual API call for deletion
-    axios.delete(`/api/adverts/${id}`) // Replace with your API endpoint
+    axios
+      .delete(`/api/adverts/${id}`) // Replace with your API endpoint
       .then(() => {
         // Update state after deleting the advert
-        setAdverts(adverts.filter(advert => advert.id !== id));
+        setAdverts(adverts.filter((advert) => advert.id !== id));
       })
-      .catch(error => console.error('Error deleting advert:', error));
+      .catch((error) => console.error("Error deleting advert:", error));
   };
 
   return (
     <div
       className="min-h-screen bg-cover bg-center relative p-8 top-14"
-      style={{ backgroundImage: `url(${backgroundImage})` }} 
+      style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      
       {/* Plus Button to Add Advert */}
       <button
         className="absolute top-4 right-4 bg-orange-500 text-white p-4 rounded-full shadow-lg hover:bg-purple-600"
@@ -49,8 +49,14 @@ const GetAll = () => {
         <FaPlus className="text-2xl" />
       </button>
 
-      <div className='flex justify-center mb-6'><h1 className="text-3xl font-bold text-white bg-orange-500 border border-purple-700 
-             rounded-md py-2 px-4 inline-block shadow-lg">Your Adverts</h1></div>
+      <div className="flex justify-center mb-6">
+        <h1
+          className="text-3xl font-bold text-white bg-orange-500 border border-purple-700 
+             rounded-md py-2 px-4 inline-block shadow-lg"
+        >
+          Your Adverts
+        </h1>
+      </div>
 
       {adverts.length === 0 ? (
         <p className="text-center text-xl text-white">No added adverts yet.</p>
@@ -84,9 +90,7 @@ const GetAll = () => {
                     Delete
                   </button>
                 </div>
-                
               </div>
-              
             </div>
           ))}
         </div>
