@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import backgroundImage from "../../assets/images/usergetall.jpg";
+import backgroundImage from "../../assets/images/bgg.jpg";
 
 const GetAllAdverts = () => {
   const [adverts, setAdverts] = useState([]);
@@ -17,8 +17,14 @@ const GetAllAdverts = () => {
   useEffect(() => {
     const fetchAdverts = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MTYzZjBkMjMyM2UzOGY4YjIxOWJlMCIsImlhdCI6MTcyOTUyMTk4OSwiZXhwIjoxNzI5NjA4Mzg5fQ.23G_68SFWt0vHWou3Obx9sScEtXU4i6ANDv4KSx1qDg"; // Add your token
+        // Get the token from localStorage
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          toast.error("Authorization token missing.");
+          return;
+        }
+
         const response = await axios.get(
           "https://backend-5kai.onrender.com/getallad",
           {
@@ -84,7 +90,7 @@ const GetAllAdverts = () => {
           placeholder="Search by title or category"
           value={searchTerm}
           onChange={handleSearch}
-          className="p-2 w-full  border-none focus:outline-none"
+          className="p-2 w-full border-none focus:outline-none"
         />
         <FaSearch className="ml-2 text-gray-500" />
       </div>
@@ -94,17 +100,17 @@ const GetAllAdverts = () => {
         {currentAdverts.map((advert) => (
           <div
             key={advert._id}
-            className="border bg-white p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
+            className="border bg-white bg-opacity-90 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img
-              src={advert.image}
+              src={advert.img ? advert.img : "/src/assets/images/default.jpg"} // Fallback to default image
               alt={advert.title}
               className="w-full h-48 object-cover rounded-md mb-2"
             />
             <h2 className="text-xl font-bold">{advert.title}</h2>
-            <p className="text-gray-700">{advert.category}</p>
-            <p className="text-gray-900 font-semibold">${advert.price}</p>
+            <p className="text-black">{advert.category}</p>
+            <p className="text-black font-semibold">${advert.price}</p>
           </div>
         ))}
       </div>
@@ -127,6 +133,13 @@ const GetAllAdverts = () => {
           </button>
         ))}
       </div>
+      {/* Home Button */}
+      <button
+        onClick={() => navigate("/dashboard")} // Navigate to dashboard
+        className="mt-6 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-800"
+      >
+        Go to Dashboard
+      </button>
     </div>
   );
 };
