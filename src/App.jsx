@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import { ToastContainer } from "react-toastify"; // Import ToastContainer
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for Toastify
 import LandingPage from "./pages/LandingPage";
 import RegisterStatus from "./pages/RegisterStatus";
 import VendorSignUp from "./pages/VendorSignUp";
@@ -22,7 +22,7 @@ import UserViewAds from "./pages/dashboard/components/UserViewAds";
 import GetAllAdverts from "./pages/getadverts";
 import SingleAdvert from "./pages/singleadd";
 import VendorGet from "./pages/dashboard/components/Vendorget";
-import UserSettings from "./pages/userSettings/UserSettings";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -63,10 +63,6 @@ function App() {
       element: <UserViewAds />,
     },
     {
-      path: "/usersettings",
-      element: <UserSettings />,
-    },
-    {
       path: "/getalladverts",
       element: <GetAllAdverts />,
     },
@@ -88,7 +84,7 @@ function App() {
         },
         {
           path: "updateadvert/:id",
-          element: <UpdateAdvert />,
+          element: <UpdateAdvert />
         },
         {
           path: "prices",
@@ -104,7 +100,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
+      <ToastContainer /> 
     </>
   );
 }
