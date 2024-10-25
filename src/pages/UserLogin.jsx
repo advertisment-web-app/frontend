@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiUserLogin } from "../services/userLogin";
+import {apiUserLogin } from "../services/userLogin";
 import { toast } from "react-toastify";
 
 
@@ -30,7 +30,11 @@ const UserLogin = () => {
         const token = response.data.accessToken;
 
         localStorage.setItem("token",token);
-        
+
+        //get user profile
+        // const userResponse = await apiGetProfile();
+        // console.log("USER PROFILE",userResponse.data);
+
         toast.success("You have logged in successfuly");
         navigate("/userviewads");
       }}

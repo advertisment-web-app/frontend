@@ -123,7 +123,7 @@ const UserViewAds = () => {
                     randomAd &&(
                         <div className="w-[100%] h-[100%]">
                             <img 
-                            src={randomAd.img}
+                            src={`https://savefiles.org/${randomAd.img}?shareable_link=464`}
                              alt={randomAd.title} 
                              className="w-[100%] h-[100%] object-cover rounded-2xl"/>
                         </div>
@@ -173,13 +173,13 @@ const UserViewAds = () => {
                         onClick={()=>handleClick(advert.id)}
                     >
                         <img
-                            src={advert.img ? advert.img : ""}
+                            src={`https://savefiles.org/${advert.img}?shareable_link=464`}
                             alt={advert.title}
-                            className="advert-image"
+                            className="advert-image hover:cursor-pointer"
                         />
                         <div className="ml-[5%] h-[20%]">
                             <h2>{advert.title}</h2>
-                            <p>{advert.user}</p>
+                            
                             <div className="flex gap-24">
                                 <p className="font-bold">${advert.price}</p>
                                 <p>

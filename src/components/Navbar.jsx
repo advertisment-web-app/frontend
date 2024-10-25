@@ -3,9 +3,9 @@ import { faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-
 
 const Navbar = () => {
   return (
-    <div className="h-[10%] flex justify-between p-4 border shadow-md bg-purple-800 fixed top-0 left-0 right-0 z-10 text-[white]">
+    <div className="h-[10%] flex justify-between p-4 border shadow-md bg-white fixed top-0 left-0 right-0 z-10 text-[#4C4C4C]">
       <a href="/dashboard">
-        <h1 className="w-[7%] mr-[5%] text-[1.2em] font-extrabold">TuDu.com</h1>
+        <h1 className="w-[7%] mr-[5%] text-[1.2em] font-extrabold">tudu.com</h1>
       </a>
       <ul className="flex justify-between align-center w-[30%] font-bold">
         <li><a href="/dashboard">Home</a></li>
