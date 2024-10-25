@@ -53,7 +53,7 @@ const SingleAdvert = () => {
       <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-6 max-w-md w-full">
         <h1 className="text-3xl font-bold mb-4 text-center">{advert.title}</h1>
         <img
-          src={advert.img}
+          src={`https://savefiles.org/${advert.img}?shareable_link=464`} 
           alt={advert.title}
           className="w-full h-64 object-cover rounded-lg mb-4"
         />
