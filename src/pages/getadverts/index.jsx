@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaList, FaThLarge } from "react-icons/fa";
 import { toast } from "react-toastify";
 import backgroundImage from "../../assets/images/one.jpg";
 
@@ -11,13 +11,13 @@ const GetAllAdverts = () => {
   const [filteredAdverts, setFilteredAdverts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [advertsPerPage] = useState(6);
+  const [isGridView, setIsGridView] = useState(true); // Track view state
   const navigate = useNavigate();
 
   // Fetch adverts from the API
   useEffect(() => {
     const fetchAdverts = async () => {
       try {
-        // Get the token from localStorage
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -28,14 +28,11 @@ const GetAllAdverts = () => {
         const response = await axios.get(
           "https://backend-5kai.onrender.com/getallad",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         setAdverts(response.data);
-        console.log("ads--->", response.data)
-        setFilteredAdverts(response.data); // Initialize with all adverts
+        setFilteredAdverts(response.data);
       } catch (error) {
         toast.error("Failed to fetch adverts");
         console.error("Error fetching adverts:", error);
@@ -82,7 +79,25 @@ const GetAllAdverts = () => {
         minHeight: "100vh",
       }}
     >
-      <div className="flex justify-center "><h1 className="text-3xl text-white font-bold mb-4 bg-orange-500 border border-purple-800 rounded-md py-2 px-4 inline-block shadow-lg">All Available Adverts</h1></div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl text-white font-bold bg-orange-500 border border-purple-800 rounded-md py-2 px-4 shadow-lg">All Available Adverts</h1>
+
+        {/* View Toggle Button */}
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setIsGridView(true)}
+            className={`p-2 rounded-md ${isGridView ? "bg-purple-800 text-white" : "bg-gray-300"}`}
+          >
+            <FaThLarge />
+          </button>
+          <button
+            onClick={() => setIsGridView(false)}
+            className={`p-2 rounded-md ${!isGridView ? "bg-purple-800 text-white" : "bg-gray-300"}`}
+          >
+            <FaList />
+          </button>
+        </div>
+      </div>
 
       {/* Search Bar */}
       <div className="flex justify-center mb-6">
@@ -99,46 +114,47 @@ const GetAllAdverts = () => {
       </div>
 
       {/* Advert Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={`grid ${isGridView ? "grid-cols-1 md:grid-cols-3 gap-4" : "gap-2"}`}>
         {currentAdverts.map((advert) => (
           <div
             key={advert._id}
-            className="border bg-white bg-opacity-90 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-300"
+            className={`border bg-white bg-opacity-90 p-4 rounded-md shadow transition-shadow duration-300 hover:shadow-lg ${
+              isGridView ? "" : "flex items-center"
+            }`}
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img
-              src={`https://savefiles.org/${advert.img}?shareable_link=464`} 
+              src={`https://savefiles.org/${advert.img}?shareable_link=464`}
               alt={advert.title}
-              className="w-full h-48 object-cover rounded-md mb-2"
+              className={`rounded-md ${isGridView ? "w-full h-48 mb-2" : "w-32 h-32 mr-4"}`}
             />
-            <h2 className="text-xl font-bold">{advert.title}</h2>
-            <p className="text-black">{advert.category}</p>
-            <p className="text-black font-semibold">${advert.price}</p>
+            <div>
+              <h2 className="text-xl font-bold">{advert.title}</h2>
+              <p className="text-black">{advert.category}</p>
+              <p className="text-black font-semibold">${advert.price}</p>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Pagination */}
       <div className="flex justify-center mt-6">
-        {[
-          ...Array(Math.ceil(filteredAdverts.length / advertsPerPage)).keys(),
-        ].map((number) => (
+        {[...Array(Math.ceil(filteredAdverts.length / advertsPerPage)).keys()].map((number) => (
           <button
             key={number}
             onClick={() => paginate(number + 1)}
             className={`px-4 py-2 mx-1 rounded-md ${
-              currentPage === number + 1
-                ? "bg-orange-500 text-white"
-                : "bg-gray-300"
+              currentPage === number + 1 ? "bg-orange-500 text-white" : "bg-gray-300"
             } transition-colors duration-300`}
           >
             {number + 1}
           </button>
         ))}
       </div>
+
       {/* Home Button */}
       <button
-        onClick={() => navigate("/dashboard")} // Navigate to dashboard
+        onClick={() => navigate("/dashboard")}
         className="mt-6 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-purple-800"
       >
         Go to Dashboard
