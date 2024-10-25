@@ -13,9 +13,9 @@ const VendorGet = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  // Fetch adverts on mount
+  // Fetch vendor-specific adverts on mount
   useEffect(() => {
-    const fetchAdverts = async () => {
+    const fetchVendorAdverts = async () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -25,7 +25,7 @@ const VendorGet = () => {
 
       try {
         const response = await axios.get(
-          "https://backend-5kai.onrender.com/getallad",
+          "https://backend-5kai.onrender.com/vendors/advert", // Vendor-specific endpoint
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -33,11 +33,12 @@ const VendorGet = () => {
         setAdverts(response.data);
         setFilteredAdverts(response.data); // Initialize filtered adverts
       } catch (error) {
-        console.error("Error fetching adverts:", error);
+        console.error("Error fetching vendor adverts:", error);
+        toast.error("Failed to fetch your adverts.");
       }
     };
 
-    fetchAdverts();
+    fetchVendorAdverts();
   }, []);
 
   // Handle search input
@@ -64,30 +65,32 @@ const VendorGet = () => {
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    const confirmDelete = window.confirm("Are you sure you want to delete this advert?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this advert?"
+    );
     if (!confirmDelete) return;
   
     try {
       await axios.delete(`https://backend-5kai.onrender.com/deletedad/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+  
+      // Filter out the deleted advert from the state
       setAdverts(adverts.filter((advert) => advert.id !== id));
-      
+  
       // Show the success toast
       toast.success("Advert deleted successfully!", {
         onClose: () => {
-          // After the toast closes, refresh the page
+          // Refresh the page after the toast closes
           setTimeout(() => {
-            navigate("/dashboard");
-            window.location.reload(); 
-          }, 500); // Short delay to ensure smooth transition
-        }
+            window.location.reload(); // This reloads the page
+          }, 500); // Short delay for a smooth transition
+        },
       });
     } catch (error) {
       toast.error("Not Authorized to Delete This Advert");
     }
   };
-  
   
 
   return (
@@ -123,13 +126,18 @@ const VendorGet = () => {
       </div>
 
       {currentAdverts.length === 0 ? (
-        <p className="text-center text-xl text-white">No added adverts yet.</p>
+        <p className="text-center text-xl text-white">
+          No adverts added by you yet.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {currentAdverts.map((advert) => (
-            <div key={advert.id} className="bg-white bg-opacity-80 rounded-lg shadow-lg p-4">
+            <div
+              key={advert.id}
+              className="bg-white bg-opacity-80 rounded-lg shadow-lg p-4"
+            >
               <img
-                src={advert.img || "/src/assets/images/default.jpg"} // Default image fallback
+                src={`https://savefiles.org/${advert.img}?shareable_link=464`} 
                 alt={advert.title}
                 className="w-full h-64 object-cover rounded-lg cursor-pointer"
                 onClick={() => navigate(`/advert/${advert.id}`)}

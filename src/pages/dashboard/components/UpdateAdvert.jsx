@@ -15,6 +15,8 @@ const UpdateAdvert = () => {
     price: "",
   });
 
+
+  
   // Fetch the advert details
   useEffect(() => {
     const fetchAdvert = async () => {

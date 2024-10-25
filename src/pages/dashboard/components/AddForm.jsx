@@ -10,8 +10,7 @@ const AddForm = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  // const [imageFile, setImageFile] = useState(null); // For file upload
-  const [imageURL, setImageURL] = useState(""); // For URL upload
+  const [imageFile, setImageFile] = useState(null); // For file upload
   const navigate = useNavigate();
 
   // Hardcoded categories
@@ -38,8 +37,6 @@ const AddForm = () => {
     try {
       // Get token from localStorage
       const token = localStorage.getItem("token");
-      console.log("Token retrieved:", token); // Log the token
-
       if (!token) {
         toast.error("Authorization token missing.");
         return;
@@ -51,12 +48,13 @@ const AddForm = () => {
       formData.append("category", category);
       formData.append("price", price);
 
-      // Use either uploaded image file or the image URL
-      // if (imageFile) {
-      // formData.append("img", imageFile); // For file upload
-      // } else if (imageURL) {
-      formData.append("img", imageURL); // For URL
-      // }
+      // Append the image file to formData
+      if (imageFile) {
+        formData.append("img", imageFile);
+      } else {
+        toast.error("Please upload an image.");
+        return;
+      }
 
       // API call
       const response = await axios.post(
@@ -65,8 +63,7 @@ const AddForm = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            // "Content-Type": "multipart/form-data", // Required for file uploads
+            "Content-Type": "multipart/form-data", // Required for file uploads
           },
         }
       );
@@ -78,7 +75,7 @@ const AddForm = () => {
       // Delay navigation to allow the toast to show
       setTimeout(() => {
         navigate("/dashboard");
-      }, 3000); // Wait for 3 seconds before navigating
+      }, 3000);
     } catch (error) {
       console.error("Error adding advert:", error.response || error);
       toast.error("Error adding advert. Please try again.", {
@@ -112,7 +109,6 @@ const AddForm = () => {
             required
           ></textarea>
 
-          {/* Category dropdown */}
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -137,18 +133,12 @@ const AddForm = () => {
           />
 
           <div className="space-y-2">
-            {/* <input
+            {/* Upload file from local storage */}
+            <input
               type="file"
               onChange={(e) => setImageFile(e.target.files[0])}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-            /> */}
-            {/* <p className="text-center text-lg">OR</p> */}
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={imageURL}
-              onChange={(e) => setImageURL(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              required
             />
           </div>
 

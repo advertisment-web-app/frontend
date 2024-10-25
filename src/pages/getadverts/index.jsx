@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import backgroundImage from "../../assets/images/bgg.jpg";
+import backgroundImage from "../../assets/images/one.jpg";
 
 const GetAllAdverts = () => {
   const [adverts, setAdverts] = useState([]);
@@ -34,6 +34,7 @@ const GetAllAdverts = () => {
           }
         );
         setAdverts(response.data);
+        console.log("ads--->", response.data)
         setFilteredAdverts(response.data); // Initialize with all adverts
       } catch (error) {
         toast.error("Failed to fetch adverts");
@@ -81,18 +82,20 @@ const GetAllAdverts = () => {
         minHeight: "100vh",
       }}
     >
-      <h1 className="text-3xl text-white font-bold mb-4">Adverts</h1>
+      <div className="flex justify-center "><h1 className="text-3xl text-white font-bold mb-4 bg-orange-500 border border-purple-800 rounded-md py-2 px-4 inline-block shadow-lg">All Available Adverts</h1></div>
 
       {/* Search Bar */}
-      <div className="flex items-center mb-4 bg-orange-500 rounded-md shadow-md overflow-hidden">
-        <input
-          type="text"
-          placeholder="Search by title or category"
-          value={searchTerm}
-          onChange={handleSearch}
-          className="p-2 w-full border-none focus:outline-none"
-        />
-        <FaSearch className="ml-2 text-gray-500" />
+      <div className="flex justify-center mb-6">
+        <div className="flex items-center bg-transparent border-4 border-orange-500 rounded-full p-2 shadow-lg w-3/4 sm:w-1/2 md:w-1/3">
+          <input
+            type="text"
+            placeholder="Search by title or category"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="bg-transparent text-white placeholder-white w-full p-2 focus:outline-none"
+          />
+          <FaSearch className="text-white ml-2" />
+        </div>
       </div>
 
       {/* Advert Cards */}
@@ -104,7 +107,7 @@ const GetAllAdverts = () => {
             onClick={() => handleAdvertClick(advert.id)}
           >
             <img
-              src={advert.img ? advert.img : "/src/assets/images/default.jpg"} // Fallback to default image
+              src={`https://savefiles.org/${advert.img}?shareable_link=464`} 
               alt={advert.title}
               className="w-full h-48 object-cover rounded-md mb-2"
             />
